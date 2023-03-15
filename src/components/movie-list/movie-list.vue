@@ -1,14 +1,38 @@
 <template>
   <ul class="movie__list">
-    <MovieItem/>
-    <MovieItem/>
-    <MovieItem/>
+    <MovieItem v-for="movie in movies" v-bind:movie="movie" :class="[{like: movie.like}, {favourite: movie.favourite}]" />
+  
   </ul>
 </template>
 <script>
 import MovieItem from "../movie-list-item/movie-list-item.vue"
 export default {
-    components: { MovieItem }
+    components: { MovieItem },
+    data() {
+    return {
+      movies: [
+        {
+          name: "Hulk",
+          viewers: 118,
+          favourite: false,
+          like: true
+        },
+        {
+          name: "Omar",
+          viewers: 222,
+          favourite: false,
+          like: false
+        },
+        {
+          name: "Iron",
+          viewers: 123,
+          favourite: true,
+          like: false
+        },
+      ],
+    };
+  },
+    
 };
 </script>
 <style scoped>

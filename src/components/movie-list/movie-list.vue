@@ -1,6 +1,6 @@
 <template>
   <ul class="movie__list">
-    <MovieItem v-for="movie in movies" v-bind:movie="movie" :class="[{like: movie.like}, {favourite: movie.favourite}]" />
+    <MovieItem v-for="movie in movies" v-bind:movie="movie" :class="[{like: movie.like}, {favourite: movie.favourite}]" :key="movie.id" />
   
   </ul>
 </template>

@@ -51,18 +51,21 @@ import MovieAddForm from "./../Movie-add-form/Movie-add-form.vue"
     return {
       movies: [
         {
+          id: 1,
           name: "Hulk",
           viewers: 118,
           favourite: false,
           like: true
         },
         {
+          id: 2,
           name: "Omar",
           viewers: 222,
           favourite: false,
           like: false
         },
         {
+          id: 3,
           name: "Iron",
           viewers: 123,
           favourite: true,

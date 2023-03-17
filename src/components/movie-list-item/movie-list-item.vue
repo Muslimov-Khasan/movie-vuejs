@@ -1,7 +1,11 @@
 <template>
   <li class="list__group-item d-flex justify-content-between">
     <span class="list-group-label">{{ movie.name }}</span>
-    <input class="list-group-item-input" type="number" v-bind:value="movie.viewers"/>
+    <input
+      class="list-group-item-input"
+      type="number"
+      v-bind:value="movie.viewers"
+    />
     <div class="d-flex justify-content-center align-items-center">
       <button class="btn-cookie btn-sm">
         <i class="fas fa-cookie"></i>
@@ -17,10 +21,10 @@
 export default {
   props: {
     movie: {
-        type: Object,
-        required: true,
-    }
-  }
+      type: Object,
+      required: true,
+    },
+  },
 };
 </script>
 <style scoped>

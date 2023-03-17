@@ -10,7 +10,7 @@
         />
         <input
           class="form-control new__movie-lable"
-          type="text"
+          type="number"
           placeholder="Nechi marotaba ko'rilgan?!"
         />
         <button class="btn btn-outline-dark">Qo'shish</button>

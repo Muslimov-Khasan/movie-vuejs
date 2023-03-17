@@ -19,7 +19,6 @@ export default {
     movie: {
         type: Object,
         required: true,
-
     }
   }
 };

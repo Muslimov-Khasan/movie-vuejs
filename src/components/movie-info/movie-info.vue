@@ -1,11 +1,27 @@
 <template>
   <div class="app-info">
-    <p class="fs-3 text-uppercaese">Barcha kinolar soni: 0</p>
-    <p class="fs-4 text-uppercaese">ko'rilgan kinolar ksoni: 0</p>
+    <p class="fs-3 text-uppercaese">
+      Barcha kinolar soni: {{ allMovieContent }}
+    </p>
+    <p class="fs-4 text-uppercaese">ko'rilgan kinolar ksoni: {{ favouriteMoviesCoount }}</p>
   </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  props: {
+    allMovieContent: {
+      type: Number,
+      required: true,
+    },
+    favouriteMoviesCoount: {
+      type: Number,
+      required: true,
+    }
+  },
+ 
+};
+</script>
 
 <style scoped>
 .app-info {

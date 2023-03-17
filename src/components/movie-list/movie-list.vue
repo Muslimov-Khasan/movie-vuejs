@@ -8,32 +8,13 @@
 import MovieItem from "../movie-list-item/movie-list-item.vue"
 export default {
     components: { MovieItem },
-    data() {
-    return {
-      movies: [
-        {
-          name: "Hulk",
-          viewers: 118,
-          favourite: false,
-          like: true
-        },
-        {
-          name: "Omar",
-          viewers: 222,
-          favourite: false,
-          like: false
-        },
-        {
-          name: "Iron",
-          viewers: 123,
-          favourite: true,
-          like: false
-        },
-      ],
-    };
-  },
-    
-};
+   props: {
+    movies: {
+      type: Array,
+      requeired: true,
+    }
+   } 
+}
 </script>
 <style scoped>
 .movie__list {

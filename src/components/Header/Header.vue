@@ -6,7 +6,7 @@
         <SearchPanle/>
         <FilterPanle/>
       </div>
-        <MovieList :movies="movies"/>
+        <MovieList :movies="movies" @onLike="onLikeHandle"/>
         <MovieAddForm @createMovie="createMovie"/>
     </div>
   </div>
@@ -77,6 +77,14 @@ import MovieAddForm from "./../Movie-add-form/Movie-add-form.vue"
   methods: {
     createMovie(item) {
       this.movies.push(item)
+    },
+    onLikeHandle(id) {
+      this.movies = this.movies.map(item => {
+        if (item.id === id) {
+          item.like= !item.like
+        }
+        return item
+      })
     }
   }
  }

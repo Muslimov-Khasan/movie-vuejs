@@ -1,6 +1,6 @@
 <template>
   <li class="list__group-item d-flex justify-content-between">
-    <span class="list-group-label">{{ movie.name }}</span>
+    <span class="list-group-label" @click="onLike">{{ movie.name }}</span>
     <input
       class="list-group-item-input"
       type="number"
@@ -23,6 +23,11 @@ export default {
     movie: {
       type: Object,
       required: true,
+    },
+  },
+  methods: {
+    onLike() {
+      this.$emit("onLike", this.movie.id);
     },
   },
 };

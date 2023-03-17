@@ -2,24 +2,47 @@
   <div>
     <div class="movie__add-from">
       <h2>Yangi kino qo'shish</h2>
-      <form class="form-add d-flex">
+      <form class="form-add d-flex" @submit.prevent>
         <input
           class="form-control new__movie-lable"
           type="text"
           placeholder="qanday kino?!"
+          :value="name"
+          @input="name = $event.target.value"
         />
         <input
           class="form-control new__movie-lable"
           type="number"
           placeholder="Nechi marotaba ko'rilgan?!"
+          @input="viewers = $event.target.value"
         />
-        <button class="btn btn-outline-dark">Qo'shish</button>
+        <button class="btn btn-outline-dark" @click="addMovie">Qo'shish</button>
       </form>
     </div>
   </div>
 </template>
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      name: "",
+      viewers: "",
+    }
+  },
+  methods: {
+   addMovie() {
+    const newMovie = {
+     name: this.name,
+     viewers: this.viewers,
+     favourite: false,
+     like: false,
+    }
+    this.$emit("createMovie", newMovie)
+    this.name = ""
+    this.viewers = ""
+   }
+  }
+};
 </script>
 <style scoped>
 .movie__add-from {

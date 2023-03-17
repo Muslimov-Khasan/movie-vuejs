@@ -6,8 +6,8 @@
         <SearchPanle/>
         <FilterPanle/>
       </div>
-        <MovieList :movies="movies" />
-        <MovieAddForm/>
+        <MovieList :movies="movies"/>
+        <MovieAddForm @createMovie="createMovie"/>
     </div>
   </div>
 </template>
@@ -71,5 +71,10 @@ import MovieAddForm from "./../Movie-add-form/Movie-add-form.vue"
       ],
     };
   },
+  methods: {
+    createMovie(item) {
+      this.movies.push(item)
+    }
+  }
  }
 </script>

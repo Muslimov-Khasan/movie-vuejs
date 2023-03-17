@@ -7,5 +7,4 @@ import Header from './components/Header/Header.vue'
 </template>
 
 <style scoped>
-
 </style>

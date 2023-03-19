@@ -1,20 +1,13 @@
 <template>
   <li class="list__group-item d-flex justify-content-between">
-    <span
-      class="list-group-label"
-      @click="$emit('onToggle', { id: movie.id, prop: 'like' })"
-      >{{ movie.name }}</span
-    >
+    <span class="list-group-label" @click="onLike">{{ movie.name }}</span>
     <input
       class="list-group-item-input"
       type="number"
       v-bind:value="movie.viewers"
     />
     <div class="d-flex justify-content-center align-items-center">
-      <button
-        class="btn-cookie btn-sm"
-        @click="$emit('onToggle', { id: movie.id, prop: 'favouite' })"
-      >
+      <button class="btn-cookie btn-sm">
         <i class="fas fa-cookie"></i>
       </button>
       <button class="btn-trash btn-sm">

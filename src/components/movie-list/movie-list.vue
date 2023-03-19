@@ -5,7 +5,7 @@
       v-bind:movie="movie"
       :class="[{ like: movie.like }, { favourite: movie.favourite }]"
       :key="movie.id"
-      @onToggle="$emit('onToggle', $event)"
+      @onLike="$emit('onLike', movie.id)"
     />
   </ul>
 </template>

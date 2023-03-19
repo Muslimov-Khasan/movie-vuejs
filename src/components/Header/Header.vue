@@ -1,58 +1,51 @@
 <template>
   <div class="container font-monospace">
     <div class="content">
-      <AppInfo
-        :allMovieContent="movies.length"
-        :favouriteMoviesCoount="movies.filter((c) => c.favourite).length"
-      />
+      <AppInfo :allMovieContent="movies.length" :favouriteMoviesCoount="movies.filter(c => c.favourite).length" />
       <div class="search__panel">
-        <SearchPanle />
-        <FilterPanle />
+        <SearchPanle/>
+        <FilterPanle/>
       </div>
-      <MovieList
-        :movies="movies"
-        @onLike="onLikeHandle"
-        @onToggle="onToggleHandle"
-      />
-      <MovieAddForm @createMovie="createMovie" />
+        <MovieList :movies="movies" @onLike="onLikeHandle"/>
+        <MovieAddForm @createMovie="createMovie"/>
     </div>
   </div>
 </template>
 
 <style>
-.container {
+ .container {
   height: 100vh;
-}
+ }
 
-.content {
+ .content {
   width: 1000px;
   min-height: 700px;
   margin: 0 auto;
   padding: 5rem 0;
-}
+ }
 
-.search__panel {
+ .search__panel {
   margin-top: 2rem;
   padding: 1.5rem;
   border-radius: 4px;
   box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.15);
   background-color: #fcfaf5;
-}
+ }
 </style>
 
 <script>
-import AppInfo from "./../movie-info/movie-info.vue";
-import SearchPanle from "./../search-panle/search-panle.vue";
-import FilterPanle from "./../app-filter/app-filter.vue";
-import MovieList from "./../movie-list/movie-list.vue";
-import MovieAddForm from "./../Movie-add-form/Movie-add-form.vue";
-export default {
+import AppInfo from "./../movie-info/movie-info.vue"
+import SearchPanle from "./../search-panle/search-panle.vue"
+import FilterPanle from "./../app-filter/app-filter.vue"
+import MovieList from "./../movie-list/movie-list.vue"
+import MovieAddForm from "./../Movie-add-form/Movie-add-form.vue"
+ export default {
   components: {
     AppInfo,
     SearchPanle,
     FilterPanle,
     MovieList,
-    MovieAddForm,
+    MovieAddForm
   },
   data() {
     return {
@@ -62,38 +55,37 @@ export default {
           name: "Hulk",
           viewers: 118,
           favourite: false,
-          like: false,
+          like: true
         },
         {
           id: 2,
           name: "Omar",
           viewers: 222,
           favourite: false,
-          like: false,
+          like: false
         },
         {
           id: 3,
           name: "Iron",
           viewers: 123,
           favourite: true,
-          like: true,
+          like: false
         },
       ],
     };
   },
   methods: {
     createMovie(item) {
-      this.movies.push(item);
+      this.movies.push(item)
     },
-    onToggleHandle(id, prop) {
-      this.movies = this.movies.map((item) => {
+    onLikeHandle(id) {
+      this.movies = this.movies.map(item => {
         if (item.id === id) {
-          return {...item, [prop]: !item[prop]}
+          item.like= !item.like
         }
-        return item;
-      });
-    },
-   
-  },
-};
+        return item
+      })
+    }
+  }
+ }
 </script>

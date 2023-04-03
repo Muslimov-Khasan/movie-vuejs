@@ -6,7 +6,7 @@
         <SearchPanle/>
         <FilterPanle/>
       </div>
-        <MovieList :movies="movies" @onLike="onLikeHandle"/>
+        <MovieList :movies="movies" @onToggle="onToggleHandle" />
         <MovieAddForm @createMovie="createMovie"/>
     </div>
   </div>
@@ -78,14 +78,18 @@ import MovieAddForm from "./../Movie-add-form/Movie-add-form.vue"
     createMovie(item) {
       this.movies.push(item)
     },
-    onLikeHandle(id) {
+    onToggleHandle({id, prop}) {
+      console.log(prop);
       this.movies = this.movies.map(item => {
         if (item.id === id) {
-          item.like= !item.like
+          return {...item, [prop]: !item[prop]}
         }
         return item
       })
-    }
+    },
+  
+   
+  
   }
  }
 </script>

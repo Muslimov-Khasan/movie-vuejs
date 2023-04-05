@@ -79,7 +79,6 @@ import MovieAddForm from "./../Movie-add-form/Movie-add-form.vue"
       this.movies.push(item)
     },
     onToggleHandle({id, prop}) {
-      console.log(prop);
       this.movies = this.movies.map(item => {
         if (item.id === id) {
           return {...item, [prop]: !item[prop]}

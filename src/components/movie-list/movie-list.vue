@@ -6,6 +6,7 @@
       :class="[{ like: movie.like }, { favourite: movie.favourite }]"
       :key="movie.id"
       @onToggle="$emit('onToggle', $event)"
+      @onDelete="$emit('onDelete', $event)"
     />
   </ul>
 </template>

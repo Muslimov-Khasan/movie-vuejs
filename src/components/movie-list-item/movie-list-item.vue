@@ -10,7 +10,7 @@
       <button class="btn-cookie btn-sm" @click="$emit('onToggle', {id: movie.id, prop:'favourite'})">
         <i class="fas fa-cookie"></i>
       </button>
-      <button class="btn-trash btn-sm">
+      <button class="btn-trash btn-sm" @click="$emit('onDelete', movie.id)">
         <i class="fas fa-trash"></i>
       </button>
       <i class="fas fa-star"></i>

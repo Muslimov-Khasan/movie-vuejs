@@ -9,7 +9,7 @@
         <SearchPanle />
         <FilterPanle />
       </div>
-      <MovieList :movies="movies" @onToggle="onToggleHandle" />
+      <MovieList :movies="movies" @onToggle="onToggleHandle" @onDelete="onDeleteHandle"/>
       <MovieAddForm @createMovie="createMovie" />
     </div>
   </div>
@@ -54,25 +54,25 @@ export default {
     return {
       movies: [
         {
-          id: 1,
           name: "Hulk",
           viewers: 118,
           favourite: false,
           like: true,
+          id: 1
         },
         {
-          id: 2,
           name: "Omar",
           viewers: 222,
           favourite: false,
           like: false,
+          id: 2,
         },
         {
-          id: 3,
           name: "Iron",
           viewers: 123,
           favourite: true,
           like: false,
+          id: 3
         },
       ],
     };
@@ -89,6 +89,11 @@ export default {
         return item;
       });
     },
+
+    onDeleteHandle(id) {
+      this.movies.splice(id, 1);
   },
+  },
+  
 };
 </script>

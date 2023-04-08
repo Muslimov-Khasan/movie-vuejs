@@ -1,33 +1,35 @@
 <template>
-  <ul class="movie__list">
-    <MovieItem
+  <ul class="movie__list list-group">
+    <MovieListItem
       v-for="movie in movies"
-      v-bind:movie="movie"
-      :class="[{ like: movie.like }, { favourite: movie.favourite }]"
+      :movie="movie"
       :key="movie.id"
       @onToggle="$emit('onToggle', $event)"
-      @onDelete="$emit('onDelete', $event)"
+      @onRemove="$emit('onRemove', $event)"
     />
   </ul>
 </template>
+
 <script>
-import MovieItem from "../movie-list-item/movie-list-item.vue";
+import MovieListItem from "../movie-list-item/MovieListItem.vue";
+
 export default {
-  components: { MovieItem },
+  components: { MovieListItem },
   props: {
     movies: {
       type: Array,
-      requeired: true,
+      required: true,
     },
   },
 };
 </script>
+
 <style scoped>
 .movie__list {
   margin-top: 2rem;
   padding: 1.5rem;
+  background-color: #fcfaf5;
   border-radius: 4px;
   box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.15);
-  background-color: #fcfaf5;
 }
 </style>

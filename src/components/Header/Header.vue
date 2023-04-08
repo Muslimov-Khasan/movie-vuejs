@@ -2,98 +2,187 @@
   <div class="container font-monospace">
     <div class="content">
       <AppInfo
-        :allMovieContent="movies.length"
-        :favouriteMoviesCoount="movies.filter((c) => c.favourite).length"
+        :allMoviesCount="movies.length"
+        :favouriteMoviesCount="movies.filter((item) => item.favourite).length"
       />
-      <div class="search__panel">
-        <SearchPanle />
-        <FilterPanle />
+      <div class="search-panel">
+        <SearchPanel :updateTermHandler="updateTermHandler" />
+        <AppFilter
+          :updateFilterHandler="updateFilterHandler"
+          :filterName="filter"
+        />
       </div>
-      <MovieList :movies="movies" @onToggle="onToggleHandle" @onDelete="onDeleteHandle"/>
+      <Box v-if="!movies.length && !isLoading">
+        <p class="text-center fs-3 text-danger">Kinolar yo'q</p>
+      </Box>
+      <Box v-else-if="isLoading" class="d-flex justify-content-center">
+        <Loader />
+      </Box>
+      <MovieList
+        v-else
+        :movies="onFilterHandler(onSearchHandler(movies, term), filter)"
+        @onToggle="onToggleHandler"
+        @onRemove="onRemoveHandler"
+      />
+      <Box class="d-flex justify-content-center">
+        <nav aria-label="pagination">
+          <ul class="pagination pagination-sm">
+            <li
+              v-for="pageNumber in totalPages"
+              :key="pageNumber"
+              :class="{ active: pageNumber === page }"
+              @click="changePageHandler(pageNumber)"
+            >
+              <span class="page-link">{{ pageNumber }}</span>
+            </li>
+          </ul>
+        </nav>
+      </Box>
       <MovieAddForm @createMovie="createMovie" />
     </div>
   </div>
 </template>
 
-<style>
-.container {
-  height: 100vh;
-}
-
-.content {
-  width: 1000px;
-  min-height: 700px;
-  margin: 0 auto;
-  padding: 5rem 0;
-}
-
-.search__panel {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  border-radius: 4px;
-  box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.15);
-  background-color: #fcfaf5;
-}
-</style>
-
 <script>
-import AppInfo from "./../movie-info/movie-info.vue";
-import SearchPanle from "./../search-panle/search-panle.vue";
-import FilterPanle from "./../app-filter/app-filter.vue";
-import MovieList from "./../movie-list/movie-list.vue";
-import MovieAddForm from "./../Movie-add-form/Movie-add-form.vue";
+import AppInfo from "../app-info/AppInfo.vue";
+import SearchPanel from "../search-panel/SearchPanel.vue";
+import AppFilter from "../app-filter/AppFilter.vue";
+import MovieList from "../movie-list/MovieList.vue";
+import MovieAddForm from "../movie-add-form/MovieAddForm.vue";
+import axios from "axios";
+
 export default {
   components: {
     AppInfo,
-    SearchPanle,
-    FilterPanle,
+    SearchPanel,
+    AppFilter,
     MovieList,
     MovieAddForm,
   },
   data() {
     return {
-      movies: [
-        {
-          name: "Hulk",
-          viewers: 118,
-          favourite: false,
-          like: true,
-          id: 1
-        },
-        {
-          name: "Omar",
-          viewers: 222,
-          favourite: false,
-          like: false,
-          id: 2,
-        },
-        {
-          name: "Iron",
-          viewers: 123,
-          favourite: true,
-          like: false,
-          id: 3
-        },
-      ],
+      movies: [],
+      term: "",
+      filter: "all",
+      isLoading: false,
+      limit: 10,
+      page: 1,
+      totalPages: 0,
     };
   },
   methods: {
-    createMovie(item) {
-      this.movies.push(item);
+    async createMovie(item) {
+      try {
+        const response = await axios.post(
+          "https://jsonplaceholder.typicode.com/posts",
+          item
+        );
+        this.movies.push(response.data);
+      } catch (error) {
+        alert(error.message);
+      }
     },
-    onToggleHandle({ id, prop }) {
+    onToggleHandler({ id, prop }) {
       this.movies = this.movies.map((item) => {
-        if (item.id === id) {
+        if (item.id == id) {
           return { ...item, [prop]: !item[prop] };
         }
         return item;
       });
     },
-
-    onDeleteHandle(id) {
-      this.movies.splice(id, 1);
+    async onRemoveHandler(id) {
+      try {
+        const response = await axios.delete(
+          `https://jsonplaceholder.typicode.com/posts/${id}`
+        );
+        this.movies = this.movies.filter((item) => item.id !== id);
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+    onSearchHandler(arr, term) {
+      if (term.length == 0) {
+        return arr;
+      }
+      return arr.filter((item) => item.name.toLowerCase().indexOf(term) > -1);
+    },
+    onFilterHandler(arr, filter) {
+      switch (filter) {
+        case "popular":
+          return arr.filter((item) => item.like);
+        case "mostViewers":
+          return arr.filter((item) => item.viewers > 70);
+        default:
+          return arr;
+      }
+    },
+    updateTermHandler(term) {
+      this.term = term;
+    },
+    updateFilterHandler(filter) {
+      this.filter = filter;
+    },
+    async fetchMovie() {
+      try {
+        this.isLoading = true;
+        const response = await axios.get(
+          "https://jsonplaceholder.typicode.com/posts",
+          {
+            params: {
+              _limit: this.limit,
+              _page: this.page,
+            },
+          }
+        );
+        const newArr = response.data.map((item) => ({
+          id: item.id,
+          name: item.title,
+          like: false,
+          favourite: false,
+          viewers: item.id * 10,
+        }));
+        this.totalPages = Math.ceil(
+          response.headers["x-total-count"] / this.limit
+        );
+        this.movies = newArr;
+      } catch (error) {
+        alert(error.message);
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    changePageHandler(page) {
+      this.page = page;
+    },
   },
+  mounted() {
+    this.fetchMovie();
   },
-  
+  watch: {
+    page() {
+      this.fetchMovie();
+    },
+  },
 };
 </script>
+
+<style>
+.container {
+  height: 100vh;
+  color: #000;
+}
+.content {
+  width: 1000px;
+  min-height: 700px;
+  background-color: #fff;
+  margin: 0 auto;
+  padding: 5rem 0;
+}
+.search-panel {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #fcfaf5;
+  border-radius: 4px;
+  box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.15);
+}
+</style>
